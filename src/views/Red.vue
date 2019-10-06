@@ -9,9 +9,6 @@
       <Light type="yellow" />
       <Light type="green" />
     </div>
-    <div>
-      <Timer v-bind:time="getTimeLeft('red')"/>
-    </div>
   </div>
 </template>
 
@@ -21,7 +18,7 @@ import viewMixin from '../mixins/viewMixin'
 export default {
   mixins: [viewMixin],
   mounted () {
-    this.countDown('red', 'yellow')
+    this.setLightUpdateInterval('yellow')
   }
 }
 </script>

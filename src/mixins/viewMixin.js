@@ -1,61 +1,84 @@
 import {
-  TICKS_RED,
-  TICKS_YELLOW,
-  TICKS_GREEN,
+  LIGHTS_TIMINGS,
   TICK_LENGTH,
   BLINK_TIME
 } from '../constants'
 import Light from '../components/Light'
-import Timer from '../components/Timer'
+import SaveBtn from '../components/SaveBtn'
+import LoadBtn from '../components/LoadBtn'
+import EventBus from '../EventBus'
 
 export default {
   components: {
     Light,
-    Timer
+    SaveBtn,
+    LoadBtn
   },
   data () {
     return {
-      counter: 0,
+      counter: this.$route.params.time || 0,
       alive: true,
-      dying: false
+      dying: false,
+      lightType: this.$route.name,
+      nextLightType: this.$route.params.nextLightType || '',
+      indervalId: null
+    }
+  },
+  computed: {
+    getTimeLeft () {
+      return LIGHTS_TIMINGS[this.lightType] - this.counter
     }
   },
   methods: {
-    getMaxCounter (currentLight) {
-      switch (currentLight) {
-        case 'yellow' : {
-          return TICKS_YELLOW
-        }
-        case 'green' : {
-          return TICKS_GREEN
-        }
-        case 'red' :
-        default : {
-          return TICKS_RED
-        }
+    computeLightProps () {
+      EventBus.$emit('sendTimeLeft', this.getTimeLeft)
+      if (this.getTimeLeft <= 0) {
+        this.alive = false
+      } else if (this.getTimeLeft <= BLINK_TIME) {
+        this.dying = true
+      } else {
+        this.alive = true
+        this.dying = false
       }
     },
-    getTimeLeft (currentLight) {
-      return this.getMaxCounter(currentLight) - this.counter
-    },
-    countDown (currentLight, nextLight) {
-      let maxCounter = this.getMaxCounter(currentLight)
-      const computeLightProps = () => {
-        if (this.counter >= maxCounter - BLINK_TIME) {
-          this.dying = true
-        }
-        if (this.counter === maxCounter) {
-          clearInterval(intervalId)
-          this.alive = false
-          this.dying = false
-          this.$router.push({ name: nextLight })
-        }
-      }
-      computeLightProps()
-      let intervalId = setInterval(() => {
+    setLightUpdateInterval () {
+      this.computeLightProps()
+      this.indervalId = setInterval(() => {
         this.counter++
-        computeLightProps()
+        this.computeLightProps()
       }, TICK_LENGTH)
+    },
+    loadAppState ({ lightType, nextLightType, time }) {
+      if (this.lightType !== lightType) {
+        this.$router.push({ name: lightType, params: { time, nextLightType } })
+      } else {
+        clearInterval(this.indervalId)
+        this.counter = time
+        this.nextLightType = nextLightType
+        this.setLightUpdateInterval()
+      }
     }
+  },
+  created () {
+    if (this.lightType !== 'yellow') {
+      this.nextLightType = 'yellow'
+    }
+    EventBus.$on('requestAppState', () => {
+      EventBus.$emit('saveAppState', {
+        lightType: this.lightType,
+        nextLightType: this.nextLightType,
+        time: this.counter
+      })
+    })
+    EventBus.$on('loadAppState', this.loadAppState)
+  },
+  updated () {
+    if (!this.alive) {
+      this.$router.push({ name: this.nextLightType })
+    }
+  },
+  beforeDestroy () {
+    clearInterval(this.indervalId)
+    EventBus.$off('loadAppState', this.loadAppState)
   }
 }

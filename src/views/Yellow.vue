@@ -9,9 +9,6 @@
       />
       <Light type="green" />
     </div>
-    <div>
-      <Timer v-bind:time="getTimeLeft('yellow')"/>
-    </div>
   </div>
 </template>
 
@@ -19,15 +16,17 @@
 import viewMixin from '../mixins/viewMixin'
 
 export default {
-  props: {
-    from: String
-  },
   mixins: [viewMixin],
   beforeRouteEnter (to, from, next) {
-    next(component => {
-      component.countDown('yellow', from.name === 'green' ? 'red' : 'green')
+    next(vm => {
+      if (!vm.nextLightType) {
+        vm.nextLightType = from.name === 'green' ? 'red' : 'green'
+      }
     })
     next()
+  },
+  created () {
+    this.setLightUpdateInterval()
   }
 }
 </script>

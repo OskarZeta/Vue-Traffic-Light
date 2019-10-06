@@ -1,8 +1,29 @@
 <template>
   <div id="app">
-    <router-view v-on:setTimeLeft="updateTimeLeft($event)"/>
+    <router-view />
+    <div>
+      <Timer />
+    </div>
+    <div>
+      <SaveBtn />
+      <LoadBtn />
+    </div>
   </div>
 </template>
+
+<script>
+import Timer from './components/Timer'
+import SaveBtn from './components/SaveBtn'
+import LoadBtn from './components/LoadBtn'
+
+export default {
+  components: {
+    Timer,
+    SaveBtn,
+    LoadBtn
+  }
+}
+</script>
 
 <style>
 #app {
