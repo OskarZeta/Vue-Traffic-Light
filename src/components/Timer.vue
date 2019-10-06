@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <h3>Time until next signal: </h3>
-    <span>{{ time }}</span>
+  <div class="timer__container">
+    <span class="timer__text">{{ time }}</span>
   </div>
 </template>
 
 <script>
 import EventBus from '../EventBus'
-import { TICK_LENGTH } from '../constants'
 
 export default {
   data () {
@@ -16,14 +14,6 @@ export default {
     }
   },
   created () {
-    // EventBus.$emit('getTimeLeft')
-    // let intervalId = setInterval(() => {
-    //   EventBus.$emit('getTimeLeft')
-    // }, TICK_LENGTH)
-    // EventBus.$on('setTimeLeft', time => {
-    //   this.time = time
-    // })
-
     EventBus.$on('sendTimeLeft', time => {
       this.time = time
     })
@@ -32,5 +22,21 @@ export default {
 </script>
 
 <style scoped>
-
+.timer__container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 9%;
+  left: calc(50% - 60px);
+  width: 120px;
+  height: 80px;
+  background: black;
+  border-radius: 10px;
+}
+.timer__text {
+  color: darkorange;
+  font-family: 'Digital-7';
+  font-size: 64px;
+}
 </style>

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <button v-on:click="handleClick">Load state</button>
-  </div>
+  <button v-on:click="handleClick">Load</button>
 </template>
 
 <script>
@@ -24,3 +22,18 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+button {
+  color: rgb(230, 0, 0);
+  transition: 0.15s;
+}
+button:hover {
+  color: red;
+  text-shadow: 0 0 2px red, 0 0 1em red;
+}
+button:active {
+  color: rgba(230, 0, 0, 0.6);
+  text-shadow: none;
+}
+</style>

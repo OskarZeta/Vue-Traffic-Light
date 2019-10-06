@@ -20,24 +20,33 @@ export default {
 
 <style scoped>
   div {
-    width: 50px;
-    height: 50px;
-    background-color: #EEE;
+    box-sizing: border-box;
+    width: 70px;
+    height: 70px;
     border-radius: 50px;
-    border: 1px solid black;
-    margin: 10px;
+    border: 2px solid #122;
+    margin: 18px 0;
   }
   .red {
-    background-color: red;
+    background-color: rgb(230, 0, 0);
+  }
+  .red-faded {
+    background-color: rgba(230, 0, 0, 0.4);
   }
   .yellow {
-    background-color: yellow;
+    background-color: rgb(255, 120, 0);
+  }
+  .yellow-faded {
+    background-color: rgba(255, 120, 0, 0.4);
   }
   .green {
-    background-color: green;
+    background-color: rgb(76, 187, 23);
+  }
+  .green-faded {
+    background-color: rgba(76, 187, 23, 0.4);
   }
   .red-blink, .yellow-blink, .green-blink {
-    animation-duration: 500ms;
+    animation-duration: 400ms;
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-direction: alternate;
@@ -53,26 +62,26 @@ export default {
   }
   @keyframes blink--red {
     from {
-      background: red;
+      background: rgb(230, 0, 0);
     }
     to {
-      background-color: #EEE;
+      background-color: rgba(230, 0, 0, 0.5);
     }
   }
   @keyframes blink--yellow {
     from {
-      background: yellow;
+      background: rgb(255, 120, 0);
     }
     to {
-      background-color: #EEE;
+      background-color: rgba(255, 120, 0, 0.5);
     }
   }
   @keyframes blink--green {
     from {
-      background: green;
+      background: rgb(76, 187, 23);
     }
     to {
-      background-color: #EEE;
+      background-color: rgba(76, 187, 23, 0.5);
     }
   }
 </style>
