@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div>
-      <Light type="red" />
-      <Light
-        type="yellow"
-        v-bind:alive="alive"
-        v-bind:dying="dying"
-      />
-      <Light type="green" />
-    </div>
+    <Light type="red" />
+    <Light
+      type="yellow"
+      v-bind:alive="alive"
+      v-bind:dying="dying"
+    />
+    <Light type="green" />
   </div>
 </template>
 
@@ -24,12 +22,6 @@ export default {
       }
     })
     next()
-  },
-  created () {
-    this.setLightUpdateInterval()
   }
 }
 </script>
-<style scoped>
-
-</style>

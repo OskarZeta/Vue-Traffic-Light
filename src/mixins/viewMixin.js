@@ -72,6 +72,9 @@ export default {
     })
     EventBus.$on('loadAppState', this.loadAppState)
   },
+  mounted () {
+    this.setLightUpdateInterval()
+  },
   updated () {
     if (!this.alive) {
       this.$router.push({ name: this.nextLightType })
